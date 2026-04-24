@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Cá Nhân</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .profile-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .input-focus:focus {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .avatar-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .avatar-container:hover .avatar-overlay {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="h-full bg-gray-50 font-sans">
+    <main class="min-h-full">
+        <!-- Header -->
+        <div class="profile-gradient">
+            <div class="max-w-4xl mx-auto px-4 py-8">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-3xl font-bold text-white">Hồ Sơ Cá Nhân</h1>
+                    <button onclick="toggleEditMode()" id="editBtn" class="bg-white text-purple-600 px-6 py-2 rounded-full font-semibold btn-hover transition-all duration-300">
+                        <i class="fas fa-edit mr-2"></i>Chỉnh sửa
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="max-w-4xl mx-auto px-4 -mt-4">
+            <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+                <!-- Avatar Section -->
+                <div class="p-8 text-center border-b border-gray-100">
+                    <div class="avatar-container w-32 h-32 mx-auto rounded-full bg-gradient-to-r from-purple-400 to-pink-400 mb-4 cursor-pointer">
+                        <img id="avatarImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='35' r='15' fill='white' opacity='0.8'/%3E%3Cpath d='M20 80 Q20 60 50 60 Q80 60 80 80 L80 90 L20 90 Z' fill='white' opacity='0.8'/%3E%3C/svg%3E" alt="Avatar" class="w-full h-full rounded-full object-cover">
+                        <div class="avatar-overlay rounded-full">
+                            <i class="fas fa-camera text-white text-xl"></i>
+                        </div>
+                    </div>
+                    <h2 id="displayName" class="text-2xl font-bold text-gray-800 mb-2">Nguyễn Văn An</h2>
+                    <p id="displayTitle" class="text-gray-600">Nhà phát triển Web</p>
+                </div>
+
+                <!-- Profile Form -->
+                <div class="p-8">
+                    <form id="profileForm" onsubmit="saveProfile(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Họ và tên -->
+                            <div>
+                                <label for="fullName" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-user mr-2 text-purple-500"></i>Họ và tên
+                                </label>
+                                <input type="text" id="fullName" value="Nguyễn Văn An" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent input-focus transition-all duration-300" 
+                                       readonly>
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-envelope mr-2 text-purple-500"></i>Email
+                                </label>
+                                <input type="email" id="email" value="nguyen.van.an@email.com" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent input-focus transition-all duration-300" 
+                                       readonly>
+                            </div>
+
+                            <!-- Số điện thoại -->
+                            <div>
+                                <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-phone mr-2 text-purple-500"></i>Số điện thoại
+                                </label>
+                                <input type="tel" id="phone" value="0123 456 789" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent input-focus transition-all duration-300" 
+                                       readonly>
+                            </div>
+
+                            <!-- Ngày sinh -->
+                            <div>
+                                <label for="birthDate" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-calendar mr-2 text-purple-500"></i>Ngày sinh
+                                </label>
+                                <input type="date" id="birthDate" value="1990-01-15" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent input-focus transition-all duration-300" 
+                                       readonly>
+                            </div>
+
+                            <!-- Chức vụ -->
+                            <div>
+                                <label for="jobTitle" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-briefcase mr-2 text-purple-500"></i>Chức vụ
+                                </label>
+                                <input type="text" id="jobTitle" value="Nhà phát triển Web" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent input-focus transition-all duration-300" 
+                                       readonly>
+                            </div>
+
+                            <!-- Công ty -->
+                            <div>
+                                <label for="company" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-building mr-2 text-purple-500"></i>Công ty
+                                </label>
+                                <input type="text" id="company" value="Công ty TNHH ABC" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent input-focus transition-all duration-300" 
+                                       readonly>
+                            </div>
+
+                            <!-- Địa chỉ -->
+                            <div class="md:col-span-2">
+                                <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-map-marker-alt mr-2 text-purple-500"></i>Địa chỉ
+                                </label>
+                                <input type="text" id="address" value="123 Đường ABC, Quận 1, TP.HCM" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent input-focus transition-all duration-300" 
+                                       readonly>
+                            </div>
+
+                            <!-- Giới thiệu -->
+                            <div class="md:col-span-2">
+                                <label for="bio" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-info-circle mr-2 text-purple-500"></i>Giới thiệu bản thân
+                                </label>
+                                <textarea id="bio" rows="4" 
+                                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent input-focus transition-all duration-300 resize-none" 
+                                          readonly>Tôi là một nhà phát triển web với 5 năm kinh nghiệm trong việc xây dựng các ứng dụng web hiện đại. Đam mê công nghệ và luôn học hỏi những kỹ thuật mới.</textarea>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div id="actionButtons" class="flex justify-end space-x-4 mt-8 hidden">
+                            <button type="button" onclick="cancelEdit()" 
+                                    class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold btn-hover transition-all duration-300">
+                                <i class="fas fa-times mr-2"></i>Hủy
+                            </button>
+                            <button type="submit" 
+                                    class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold btn-hover transition-all duration-300">
+                                <i class="fas fa-save mr-2"></i>Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Additional Info Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 mb-8">
+                <div class="bg-white rounded-xl card-shadow p-6 text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-project-diagram text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Dự án hoàn thành</h3>
+                    <p class="text-3xl font-bold text-blue-600">24</p>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-6 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Khách hàng hài lòng</h3>
+                    <p class="text-3xl font-bold text-green-600">98%</p>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-6 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-award text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Năm kinh nghiệm</h3>
+                    <p class="text-3xl font-bold text-purple-600">5+</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300">
+            <i class="fas fa-check-circle mr-2"></i>Cập nhật thông tin thành công!
+        </div>
+    </main>
+
+    <script>
+        let isEditMode = false;
+        let originalData = {};
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const inputs = document.querySelectorAll('input, textarea');
+            const editBtn = document.getElementById('editBtn');
+            const actionButtons = document.getElementById('actionButtons');
+
+            if (isEditMode) {
+                // Save original data
+                inputs.forEach(input => {
+                    originalData[input.id] = input.value;
+                });
+
+                // Enable editing
+                inputs.forEach(input => {
+                    input.removeAttribute('readonly');
+                    input.classList.add('bg-purple-50');
+                });
+                
+                editBtn.innerHTML = '<i class="fas fa-times mr-2"></i>Hủy chỉnh sửa';
+                editBtn.classList.remove('bg-white', 'text-purple-600');
+                editBtn.classList.add('bg-red-500', 'text-white');
+                actionButtons.classList.remove('hidden');
+            } else {
+                cancelEdit();
+            }
+        }
+
+        function cancelEdit() {
+            isEditMode = false;
+            const inputs = document.querySelectorAll('input, textarea');
+            const editBtn = document.getElementById('editBtn');
+            const actionButtons = document.getElementById('actionButtons');
+
+            // Restore original data
+            inputs.forEach(input => {
+                if (originalData[input.id]) {
+                    input.value = originalData[input.id];
+                }
+                input.setAttribute('readonly', true);
+                input.classList.remove('bg-purple-50');
+            });
+
+            editBtn.innerHTML = '<i class="fas fa-edit mr-2"></i>Chỉnh sửa';
+            editBtn.classList.remove('bg-red-500', 'text-white');
+            editBtn.classList.add('bg-white', 'text-purple-600');
+            actionButtons.classList.add('hidden');
+        }
+
+        function saveProfile(event) {
+            event.preventDefault();
+            
+            // Update display name and title
+            const fullName = document.getElementById('fullName').value;
+            const jobTitle = document.getElementById('jobTitle').value;
+            
+            document.getElementById('displayName').textContent = fullName;
+            document.getElementById('displayTitle').textContent = jobTitle;
+
+            // Disable edit mode
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.setAttribute('readonly', true);
+                input.classList.remove('bg-purple-50');
+            });
+
+            const editBtn = document.getElementById('editBtn');
+            const actionButtons = document.getElementById('actionButtons');
+            
+            editBtn.innerHTML = '<i class="fas fa-edit mr-2"></i>Chỉnh sửa';
+            editBtn.classList.remove('bg-red-500', 'text-white');
+            editBtn.classList.add('bg-white', 'text-purple-600');
+            actionButtons.classList.add('hidden');
+            
+            isEditMode = false;
+
+            // Show success message
+            showSuccessMessage();
+        }
+
+        function showSuccessMessage() {
+            const message = document.getElementById('successMessage');
+            message.classList.remove('translate-x-full');
+            
+            setTimeout(() => {
+                message.classList.add('translate-x-full');
+            }, 3000);
+        }
+
+        // Avatar click handler
+        document.querySelector('.avatar-container').addEventListener('click', function() {
+            if (isEditMode) {
+                // In a real app, this would open a file picker
+                showSuccessMessage();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98fe0b7dc2064dbc',t:'MTc2MDY4NTc0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

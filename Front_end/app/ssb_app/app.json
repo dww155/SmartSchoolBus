@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "ssb_app",
+    "slug": "ssb_app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icons/LogoBusApp3.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/icons/LogoBusApp3.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/LogoBusApp3.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.ssb_app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}

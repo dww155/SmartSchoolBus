@@ -1,0 +1,109 @@
+body {
+  box-sizing: border-box;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #073a4b 0%, #108ab1 50%, #06d7a0 100%);
+}
+
+.glass-effect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.floating-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+.bus-shadow {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.road {
+  background: linear-gradient(90deg,
+      #4a5568 0%,
+      #2d3748 20%,
+      #1a202c 50%,
+      #2d3748 80%,
+      #4a5568 100%);
+  position: relative;
+}
+
+.road-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(90deg,
+      #fbbf24 0px,
+      #fbbf24 30px,
+      transparent 30px,
+      transparent 60px);
+  transform: translateY(-50%);
+  animation: moveLine 3s linear infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-50px);
+  }
+}
+
+.slide-in {
+  animation:
+    slideIn 0.5s linear forwards,
+    brake 0.5s linear .5s forwards,
+    getBack 0.5s linear 1s forwards;
+}
+
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100vw) rotate(0);
+    transform-origin: bottom left;
+  }
+
+  to {
+    transform: translateX(30vw) rotate(-45deg);
+    transform-origin: bottom left;
+  }
+}
+
+@keyframes brake {
+  from {
+    transform-origin: bottom left;
+    transform: translateX(30vw) rotate(-45deg);
+  }
+
+  to {
+    transform-origin: bottom left;
+    transform: translateX(30vw) rotate(0);
+  }
+}
+
+@keyframes getBack {
+  from {
+    transform: translateX(30vw);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.input-focus {
+  transition: all 0.3s ease;
+}
+
+.input-focus:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}

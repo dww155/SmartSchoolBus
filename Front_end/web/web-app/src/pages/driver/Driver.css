@@ -1,0 +1,62 @@
+/* Sidebar */
+.driver-sidebar {
+  background: #fff;
+  width: 220px;
+  box-shadow: 2px 0 8px rgba(53,117,211,0.07);
+  padding: 0 0 24px 0;
+}
+
+.driver-sidebar nav ul {
+  list-style: none;
+  padding: 24px 0 0 0;
+  margin: 0;
+}
+
+.driver-sidebar nav ul li {
+  margin-bottom: 8px;
+}
+
+.driver-sidebar nav ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: #3575d3;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.driver-sidebar nav ul li a.active,
+.driver-sidebar nav ul li a.selected,
+.driver-sidebar nav ul li a[aria-current="page"] {
+  background: #3575d3;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Main content */
+.driver-main {
+  flex: 1;
+  padding: 32px;
+  background: linear-gradient(135deg, #e0e7ff 0%, #a5b4fc 100%);
+  min-height: 100vh;
+}
+
+/* Card style */
+.driver-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(53,117,211,0.07);
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+/* Title */
+.driver-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #3575d3;
+}

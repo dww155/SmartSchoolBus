@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart School Bus - Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+
+    .sidebar-transition {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-online {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    .notification-badge {
+      animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+
+      40% {
+        transform: translateY(-3px);
+      }
+
+      60% {
+        transform: translateY(-2px);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white shadow-lg border-b-4 border-blue-500">
+    <div class="flex items-center justify-between px-6 py-4">
+      <div class="flex items-center space-x-4">
+        <div class="bg-blue-500 p-2 rounded-lg">
+          <i class="fas fa-bus text-white text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">Smart School Bus</h1>
+          <p class="text-sm text-gray-600">Hệ thống quản lý xe đưa đón học sinh</p>
+        </div>
+        <div class="hidden md:flex items-center space-x-6 ml-8">
+          <div class="flex items-center space-x-2 bg-green-50 px-3 py-2 rounded-lg">
+            <div class="w-2 h-2 bg-green-500 rounded-full status-online"></div>
+            <span class="text-sm font-medium text-green-700">Hệ thống hoạt động</span>
+          </div>
+          <div class="text-center">
+            <p class="text-xs text-gray-500">Xe đang hoạt động</p>
+            <p class="text-lg font-bold text-blue-600">18/24</p>
+          </div>
+          <div class="text-center">
+            <p class="text-xs text-gray-500">Học sinh đang di chuyển</p>
+            <p class="text-lg font-bold text-purple-600">856</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <!-- Weather Widget -->
+        <div class="hidden lg:flex items-center space-x-2 bg-blue-50 px-3 py-2 rounded-lg">
+          <i class="fas fa-sun text-yellow-500"></i>
+          <div class="text-center">
+            <p class="text-xs text-gray-600">Hà Nội</p>
+            <p class="text-sm font-semibold text-gray-800">28°C</p>
+          </div>
+        </div>
+
+        <!-- Emergency Button -->
+        <button class="bg-red-100 p-2 rounded-full hover:bg-red-200 transition-colors" title="Khẩn cấp">
+          <i class="fas fa-exclamation-triangle text-red-600"></i>
+        </button>
+
+        <!-- Quick Search -->
+        <div class="relative hidden md:block">
+          <input type="text" placeholder="Tìm xe, tài xế..."
+            class="bg-gray-100 pl-8 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">
+          <i class="fas fa-search absolute left-2 top-2.5 text-gray-400 text-sm"></i>
+        </div>
+
+        <!-- Language Switch -->
+        <div class="relative">
+          <button
+            class="flex items-center space-x-1 bg-gray-100 px-3 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+            <img
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='15' viewBox='0 0 20 15'%3E%3Crect width='20' height='5' fill='%23da020e'/%3E%3Crect y='5' width='20' height='5' fill='%23ffff00'/%3E%3Crect y='10' width='20' height='5' fill='%23da020e'/%3E%3Cpolygon points='0,0 0,15 10,7.5' fill='%23da020e'/%3E%3C/svg%3E"
+              alt="VN" class="w-5 h-4">
+            <span class="text-sm font-medium text-gray-700">VI</span>
+            <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+          </button>
+        </div>
+
+        <!-- Notifications -->
+        <div class="relative">
+          <button class="bg-blue-100 p-2 rounded-full hover:bg-blue-200 transition-colors" id="notification-btn">
+            <i class="fas fa-bell text-blue-600"></i>
+            <span
+              class="notification-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+          </button>
+        </div>
+
+        <!-- Settings -->
+        <button class="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition-colors" title="Cài đặt">
+          <i class="fas fa-cog text-gray-600"></i>
+        </button>
+
+        <!-- User Profile -->
+        <div class="flex items-center space-x-2 bg-gray-50 rounded-lg p-2">
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%234F46E5'/%3E%3Ctext x='20' y='26' text-anchor='middle' fill='white' font-family='Arial' font-size='16' font-weight='bold'%3EQ%3C/text%3E%3C/svg%3E"
+            alt="Admin" class="w-10 h-10 rounded-full">
+          <div class="hidden md:block">
+            <p class="text-sm font-semibold text-gray-800">Quản trị viên</p>
+            <p class="text-xs text-gray-600">Trường DEF</p>
+          </div>
+          <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary Header Bar -->
+    <div class="bg-gray-50 px-6 py-2 border-t">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-6">
+          <div class="flex items-center space-x-2">
+            <i class="fas fa-clock text-gray-500 text-sm"></i>
+            <span class="text-sm text-gray-600">Cập nhật cuối: <span id="last-update"
+                class="font-medium">16:45:23</span></span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <i class="fas fa-wifi text-green-500 text-sm"></i>
+            <span class="text-sm text-gray-600">Kết nối: <span class="font-medium text-green-600">Tốt</span></span>
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">Xuất báo cáo</button>
+          <button class="text-sm text-green-600 hover:text-green-800 font-medium">Sao lưu dữ liệu</button>
+          <button class="bg-blue-500 text-white px-4 py-1 rounded-lg text-sm hover:bg-blue-600 transition-colors">
+            <i class="fas fa-plus mr-1"></i>Thêm mới
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside class="bg-white w-64 min-h-screen shadow-lg sidebar-transition">
+      <nav class="p-4">
+        <ul class="space-y-2">
+          <li>
+            <a href="#dashboard" class="flex items-center space-x-3 p-3 rounded-lg bg-blue-500 text-white">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Tổng quan</span>
+            </a>
+          </li>
+          <li>
+            <a href="#buses"
+              class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">
+              <i class="fas fa-bus"></i>
+              <span>Quản lý xe buýt</span>
+            </a>
+          </li>
+          <li>
+            <a href="#drivers"
+              class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">
+              <i class="fas fa-user-tie"></i>
+              <span>Quản lý tài xế</span>
+            </a>
+          </li>
+          <li>
+            <a href="#students"
+              class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">
+              <i class="fas fa-graduation-cap"></i>
+              <span>Quản lý học sinh</span>
+            </a>
+          </li>
+          <li>
+            <a href="#routes"
+              class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">
+              <i class="fas fa-route"></i>
+              <span>Tuyến đường</span>
+            </a>
+          </li>
+          <li>
+            <a href="#schedule"
+              class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Lịch trình</span>
+            </a>
+          </li>
+          <li>
+            <a href="#tracking"
+              class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Theo dõi thời gian thực</span>
+            </a>
+          </li>
+          <li>
+            <a href="#messages"
+              class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">
+              <i class="fas fa-comments"></i>
+              <span>Tin nhắn</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      <!-- Dashboard Overview -->
+      <div id="dashboard-content">
+        <div class="mb-6">
+          <h2 class="text-3xl font-bold text-gray-800 mb-2">Tổng quan hệ thống</h2>
+          <p class="text-gray-600">Cập nhật lúc: <span id="current-time" class="font-semibold"></span></p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white p-6 rounded-xl shadow-md card-hover border-l-4 border-blue-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Tổng số xe buýt</p>
+                <p class="text-3xl font-bold text-gray-800">24</p>
+                <p class="text-sm text-green-600 mt-1">
+                  <i class="fas fa-circle status-online text-xs"></i> 18 đang hoạt động
+                </p>
+              </div>
+              <div class="bg-blue-100 p-3 rounded-full">
+                <i class="fas fa-bus text-blue-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-md card-hover border-l-4 border-green-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Tổng số tài xế</p>
+                <p class="text-3xl font-bold text-gray-800">32</p>
+                <p class="text-sm text-green-600 mt-1">
+                  <i class="fas fa-circle status-online text-xs"></i> 20 đang làm việc
+                </p>
+              </div>
+              <div class="bg-green-100 p-3 rounded-full">
+                <i class="fas fa-user-tie text-green-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-md card-hover border-l-4 border-purple-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Tổng số học sinh</p>
+                <p class="text-3xl font-bold text-gray-800">1,247</p>
+                <p class="text-sm text-blue-600 mt-1">
+                  <i class="fas fa-arrow-up text-xs"></i> 856 đang di chuyển
+                </p>
+              </div>
+              <div class="bg-purple-100 p-3 rounded-full">
+                <i class="fas fa-graduation-cap text-purple-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-md card-hover border-l-4 border-orange-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Tuyến đường</p>
+                <p class="text-3xl font-bold text-gray-800">15</p>
+                <p class="text-sm text-orange-600 mt-1">
+                  <i class="fas fa-exclamation-triangle text-xs"></i> 2 có cảnh báo
+                </p>
+              </div>
+              <div class="bg-orange-100 p-3 rounded-full">
+                <i class="fas fa-route text-orange-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-time Tracking Map -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div class="lg:col-span-2 bg-white rounded-xl shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold text-gray-800">Theo dõi thời gian thực</h3>
+              <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-1">
+                  <div class="w-3 h-3 bg-green-500 rounded-full status-online"></div>
+                  <span class="text-sm text-gray-600">Cập nhật mỗi 3 giây</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-100 rounded-lg h-80 flex items-center justify-center relative overflow-hidden">
+              <!-- Simulated Map -->
+              <div class="absolute inset-0 bg-gradient-to-br from-blue-200 to-green-200">
+                <!-- Bus Icons on Map -->
+                <div class="absolute top-16 left-20 bg-blue-500 p-2 rounded-full shadow-lg">
+                  <i class="fas fa-bus text-white text-sm"></i>
+                </div>
+                <div class="absolute top-32 right-24 bg-green-500 p-2 rounded-full shadow-lg">
+                  <i class="fas fa-bus text-white text-sm"></i>
+                </div>
+                <div class="absolute bottom-20 left-32 bg-orange-500 p-2 rounded-full shadow-lg">
+                  <i class="fas fa-bus text-white text-sm"></i>
+                </div>
+                <div class="absolute bottom-16 right-16 bg-purple-500 p-2 rounded-full shadow-lg">
+                  <i class="fas fa-bus text-white text-sm"></i>
+                </div>
+              </div>
+              <div class="text-center z-10">
+                <i class="fas fa-map-marked-alt text-6xl text-gray-400 mb-4"></i>
+                <p class="text-gray-600 font-semibold">Bản đồ theo dõi thời gian thực</p>
+                <p class="text-sm text-gray-500">18 xe đang hoạt động</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Cảnh báo & Thông báo</h3>
+            <div class="space-y-4">
+              <div class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                <i class="fas fa-exclamation-triangle text-red-500 mt-1"></i>
+                <div>
+                  <p class="text-sm font-semibold text-red-800">Xe BUS-001 trễ 15 phút</p>
+                  <p class="text-xs text-red-600">Tuyến Cầu Giấy - Đống Đa</p>
+                  <p class="text-xs text-gray-500">5 phút trước</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-3 p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                <i class="fas fa-clock text-yellow-500 mt-1"></i>
+                <div>
+                  <p class="text-sm font-semibold text-yellow-800">Xe BUS-007 sắp đến điểm đón</p>
+                  <p class="text-xs text-yellow-600">Trường THCS Nguyễn Du</p>
+                  <p class="text-xs text-gray-500">2 phút trước</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                <div>
+                  <p class="text-sm font-semibold text-green-800">Hoàn thành tuyến sáng</p>
+                  <p class="text-xs text-green-600">Xe BUS-012 - 45 học sinh</p>
+                  <p class="text-xs text-gray-500">10 phút trước</p>
+                </div>
+              </div>
+            </div>
+            <button class="w-full mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+              Xem tất cả thông báo
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <button
+            class="bg-white p-6 rounded-xl shadow-md card-hover text-center border-2 border-transparent hover:border-blue-500 transition-all">
+            <div class="bg-blue-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <i class="fas fa-plus text-blue-600 text-xl"></i>
+            </div>
+            <h4 class="font-semibold text-gray-800 mb-2">Thêm xe buýt mới</h4>
+            <p class="text-sm text-gray-600">Đăng ký và phân công xe buýt</p>
+          </button>
+
+          <button
+            class="bg-white p-6 rounded-xl shadow-md card-hover text-center border-2 border-transparent hover:border-green-500 transition-all">
+            <div class="bg-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <i class="fas fa-calendar-plus text-green-600 text-xl"></i>
+            </div>
+            <h4 class="font-semibold text-gray-800 mb-2">Tạo lịch trình</h4>
+            <p class="text-sm text-gray-600">Lập lịch tuần/tháng cho xe</p>
+          </button>
+
+          <button
+            class="bg-white p-6 rounded-xl shadow-md card-hover text-center border-2 border-transparent hover:border-purple-500 transition-all">
+            <div class="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <i class="fas fa-user-plus text-purple-600 text-xl"></i>
+            </div>
+            <h4 class="font-semibold text-gray-800 mb-2">Thêm tài xế</h4>
+            <p class="text-sm text-gray-600">Đăng ký tài xế mới</p>
+          </button>
+
+          <button
+            class="bg-white p-6 rounded-xl shadow-md card-hover text-center border-2 border-transparent hover:border-orange-500 transition-all">
+            <div class="bg-orange-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <i class="fas fa-envelope text-orange-600 text-xl"></i>
+            </div>
+            <h4 class="font-semibold text-gray-800 mb-2">Gửi thông báo</h4>
+            <p class="text-sm text-gray-600">Nhắn tin tới tài xế/phụ huynh</p>
+          </button>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <h3 class="text-xl font-bold text-gray-800 mb-4">Hoạt động gần đây</h3>
+          <div class="space-y-4">
+            <div class="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+              <div class="bg-blue-100 p-2 rounded-full">
+                <i class="fas fa-bus text-blue-600"></i>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-gray-800">Xe BUS-015 đã hoàn thành tuyến chiều</p>
+                <p class="text-xs text-gray-600">Tài xế: Nguyễn Văn A • 15:30</p>
+              </div>
+              <span class="text-xs text-gray-500">5 phút trước</span>
+            </div>
+            <div class="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+              <div class="bg-green-100 p-2 rounded-full">
+                <i class="fas fa-user-check text-green-600"></i>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-gray-800">Tài xế Trần Thị B đã check-in</p>
+                <p class="text-xs text-gray-600">Xe BUS-008 • Tuyến Hai Bà Trưng</p>
+              </div>
+              <span class="text-xs text-gray-500">12 phút trước</span>
+            </div>
+            <div class="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+              <div class="bg-purple-100 p-2 rounded-full">
+                <i class="fas fa-graduation-cap text-purple-600"></i>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-gray-800">45 học sinh đã được đón thành công</p>
+                <p class="text-xs text-gray-600">Tuyến Cầu Giấy - Đống Đa</p>
+              </div>
+              <span class="text-xs text-gray-500">18 phút trước</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Update current time
+    function updateTime() {
+      const now = new Date();
+      const timeString = now.toLocaleString('vi-VN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      document.getElementById('current-time').textContent = timeString;
+    }
+
+    // Update time every second
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Simulate real-time updates
+    function simulateRealTimeUpdates() {
+      const notifications = [
+        "Xe BUS-003 đã đến điểm đón",
+        "Tài xế Lê Văn C báo cáo hoàn thành tuyến",
+        "Cảnh báo: Xe BUS-009 trễ 8 phút",
+        "25 học sinh đã được đón an toàn"
+      ];
+
+      // Randomly show notifications
+      if (Math.random() > 0.7) {
+        const randomNotification = notifications[Math.floor(Math.random() * notifications.length)];
+        console.log("Thông báo mới:", randomNotification);
+      }
+    }
+
+    // Simulate updates every 10 seconds
+    setInterval(simulateRealTimeUpdates, 10000);
+
+    // Navigation functionality
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // Remove active class from all links
+        document.querySelectorAll('nav a').forEach(l => {
+          l.classList.remove('bg-blue-500', 'text-white');
+          l.classList.add('text-gray-700', 'hover:bg-gray-100');
+        });
+
+        // Add active class to clicked link
+        this.classList.remove('text-gray-700', 'hover:bg-gray-100');
+        this.classList.add('bg-blue-500', 'text-white');
+
+        // Here you would typically load different content based on the clicked section
+        const section = this.getAttribute('href').substring(1);
+        console.log('Navigating to:', section);
+      });
+    });
+
+    // Quick action buttons
+    document.querySelectorAll('button').forEach(button => {
+      if (button.textContent.includes('Thêm xe buýt mới') ||
+        button.textContent.includes('Tạo lịch trình') ||
+        button.textContent.includes('Thêm tài xế') ||
+        button.textContent.includes('Gửi thông báo')) {
+        button.addEventListener('click', function () {
+          const action = this.querySelector('h4').textContent;
+          alert(`Chức năng "${action}" sẽ được triển khai trong phiên bản tiếp theo!`);
+        });
+      }
+    });
+
+    // Header functionality
+    document.getElementById('notification-btn').addEventListener('click', function () {
+      alert('Bạn có 3 thông báo mới:\n1. Xe BUS-001 trễ 15 phút\n2. Xe BUS-007 sắp đến điểm đón\n3. Hoàn thành tuyến sáng');
+    });
+
+    // Emergency button
+    document.querySelector('.fa-exclamation-triangle').parentElement.addEventListener('click', function () {
+      if (confirm('Bạn có chắc chắn muốn kích hoạt chế độ khẩn cấp?')) {
+        alert('Đã kích hoạt chế độ khẩn cấp! Tất cả xe buýt sẽ nhận được thông báo.');
+      }
+    });
+
+    // Search functionality
+    document.querySelector('input[placeholder="Tìm xe, tài xế..."]').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        const searchTerm = this.value;
+        if (searchTerm) {
+          alert(`Đang tìm kiếm: "${searchTerm}"`);
+        }
+      }
+    });
+
+    // Language switch
+    document.querySelector('.fa-chevron-down').parentElement.addEventListener('click', function () {
+      alert('Chức năng chuyển đổi ngôn ngữ sẽ được cập nhật trong phiên bản tiếp theo!');
+    });
+
+    // Settings button
+    document.querySelector('.fa-cog').parentElement.addEventListener('click', function () {
+      alert('Mở cài đặt hệ thống...');
+    });
+
+    // Header action buttons
+    document.querySelectorAll('.bg-gray-50 + div button').forEach(button => {
+      button.addEventListener('click', function () {
+        const buttonText = this.textContent.trim();
+        alert(`Chức năng "${buttonText}" đang được phát triển!`);
+      });
+    });
+
+    // Update last update time
+    function updateLastUpdateTime() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('vi-VN');
+      const lastUpdateElement = document.getElementById('last-update');
+      if (lastUpdateElement) {
+        lastUpdateElement.textContent = timeString;
+      }
+    }
+
+    // Update last update time every 30 seconds
+    setInterval(updateLastUpdateTime, 30000);
+  </script>
+  <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'987eb9eb31acfd1c',t:'MTc1OTM1MDcxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
