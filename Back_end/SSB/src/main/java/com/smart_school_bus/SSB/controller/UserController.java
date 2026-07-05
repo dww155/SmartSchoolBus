@@ -102,9 +102,9 @@ public class UserController {
         return response;
     }
 
-    @PutMapping("/password/{id}")
-    public ApiResponse changePassword(@PathVariable String id,@Valid @RequestBody ChangePasswordRequest request) {
-        userService.changePassword(id, request);
+    @PutMapping("/password")
+    public ApiResponse changePassword(@Valid @RequestBody ChangePasswordRequest request) {
+        userService.changePassword(request);
 
         ApiResponse response = ApiResponse.builder()
                 .success(true)

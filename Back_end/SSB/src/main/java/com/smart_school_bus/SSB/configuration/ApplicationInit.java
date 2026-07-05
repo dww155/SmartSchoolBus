@@ -127,6 +127,7 @@ public class ApplicationInit {
                 log.info("admin user has been created with default password: admin123, please change it");
             }
             log.info("Application initialization completed .....");
+            log.info("swagger: localhost:8080/smart-school-bus/swagger-ui/index.html");
         };
     }
 }
