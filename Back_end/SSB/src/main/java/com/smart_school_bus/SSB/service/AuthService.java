@@ -56,14 +56,18 @@ public class AuthService {
     protected long REFRESHABLE_UTIL;
 
     public AuthResponse authenticate(AuthRequest request) {
-        User user = userRepository.findByUserName(request.getUserName())
+        //find user
+        User user = userRepository.findByUserName(request.getUserName()) // find user
                 .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
 
+        //check password
         if(!(passwordEncoder.matches(request.getPassword(), user.getPassword()) && user.isActivate()))
             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
+        //generate access token
         String token = generateToken(user);
 
+        //create and return response
         AuthResponse respond = AuthResponse.builder()
                 .result(token)
                 .authenticated(true)
